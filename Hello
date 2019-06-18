@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Jeu Video Ninja</title>
+</head>
+
+<body>
+	<script>
+	var canvas = document.createElement('canvas');
+	canvas.width = 800;
+	canvas.height = 600;
+	document.body.appendChild(canvas);
+	var c = canvas.getContext('2d');
+    var touche_espace_est_pressee = false ;
+	var j = false ;
+	var saut = false ;
+	var image = new Image();
+	image.src = 'ninjaanime.png';
+	var fond1 = new Image();
+	fond1.src = 'fond.png'
+	var fond2 = new Image();
+	fond2.src = 'fond.png'
+    var robot = new Image();
+	robot.src = 'robotanime.png';
+    var explosion = new Image();
+    explosion.src = 'boom.png'; 
+    var gameover = new Image();
+    gameover.src = 'truc2.png';
+
+	var anim = 0
+	var animr = 0
+
+	var njsx = 0
+	var rbx = 0
+	var rby = 0
+	var robotdescend = 0
+	
+    var perdu = 0
+    
+    var autre = 0
+
+
+	var gravité = 1
+
+	var x = 0;
+	var y = -175;
+	
+	var x1 = 1000;
+
+	var xninja = 20
+	var yninja = 360
+    
+    var xrobot = 800
+    var yrobot = 440
+    
+    var vrobot = 8 
+    
+    var distance = 1
+    
+    var xboom = 1
+    var yboom = 1
+
+	window.addEventListener('keydown', touchepressee);
+	window.addEventListener('load',start);
+
+
+	function start() {
+		window.requestAnimationFrame(loop);
+	}
+
+	function touchepressee(event) {
+		
+			if ((event.keyCode == 32)&&(j == false)) {
+				touche_espace_est_pressee = true ;
+				j = true ; 
+			}
+		
+	}
+  
+    function loop() {
+		c.clearRect(0, 0, canvas.width, canvas.height);
+		c.drawImage(fond1,x,y);
+		c.drawImage(fond2,x1,y);
+		c.fillStyle = "	#00b700 ";
+		c.fillRect(0,525,800,300);
+        	c.drawImage(robot, rbx, rby, 142, 139, xrobot, yrobot, 142, 139);
+		c.drawImage(image,njsx, 0, 170, 229 , xninja, yninja,170,229);
+		
+     
+        
+        window.requestAnimationFrame(loop);
+        
+		xrobot = xrobot - vrobot
+        
+        
+     
+        x=x-5;
+		x1 = x1-5;
+        
+        distance = Math.sqrt ((xrobot-xninja)**2 + (yrobot-yninja)**2)
+		
+		xboom = xninja - 150
+        yboom = yninja - 150
+        
+        if (x <= -1000) {
+			x = 0
+		}
+		if (x1 <= 0) {
+			x1 = 1000
+		}
+
+		if (touche_espace_est_pressee) {
+			yninja = yninja - gravité;
+			gravité = gravité * 0.915
+		
+		}
+			
+		
+		if (yninja <= 175) {
+			touche_espace_est_pressee = false;
+		
+		}
+
+     		if ((touche_espace_est_pressee == false) && (yninja < 360)) {
+			yninja = yninja + gravité;
+			gravité = gravité * 1.1
+		
+		}
+
+		if (yninja >= 360) {
+		    gravité = 17
+            	yninja = 360
+		j = false
+		}
+        
+        
+        
+        
+        
+        
+
+        
+
+        
+        
+        
+        if (xrobot <= -100) {
+            xrobot = 800
+            if (vrobot <= 15) {
+		vrobot = vrobot + 0.5
+		}
+        } 
+       
+            if ((distance <= 150) && (autre <= 9.9)) {
+            c.drawImage(explosion,xboom,yboom)
+            perdu = 1
+            autre = autre + 0.000001
+        } 
+        
+        if (autre >= 0.000001) {
+            autre = autre + 1
+   
+        }
+	
+	if (autre >= 10) {
+            autre = 15
+            c.drawImage(gameover,0,0)
+        }
+	
+	if (j == false) {
+		anim++
+	}
+		
+	if (anim >= 4.5) { 
+	anim = 0
+	njsx = njsx + 187
+	rbx = rbx + 142
+	robotdescend = robotdescend + 1
+	}
+	
+	animr++
+
+	if (animr >= 3.5) { 
+	animr = 0
+	rbx = rbx + 142
+	robotdescend = robotdescend + 1
+	}
+
+
+	
+		
+	if (robotdescend >= 3){
+		robotdescend = 0
+		rby = rby + 139
+	}
+
+	if (njsx >= 1000){
+	njsx = 0
+	}     
+
+	if (rbx >= 425) {
+	rbx = 0
+	}
+
+	if (rby >= 417) {
+		rby = 0
+	}
+
+	}
+		
+
+</script>
+</body>
+</html>
